@@ -3,7 +3,8 @@ import { IsByteLength, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 export class VerifyAccountDTO {
   @IsNotEmpty()
   @IsString()
-  phone: string;
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()

@@ -62,17 +62,17 @@ export class AuthService {
 
   async verifyAccount(verifyAccountDTO: VerifyAccountDTO) {
     const user = await this.userRepository.getOne({
-      phone: verifyAccountDTO.phone.trim(),
+      email: verifyAccountDTO.email.trim(),
     });
     if (!user) throw new UnauthorizedException('User is not registered');
-    if (user.phoneVerified)
-      throw new ConflictException('phone already verified');
+    if (user.emailVerified)
+      throw new ConflictException('email already verified');
     if (user.otp !== verifyAccountDTO.otp)
       throw new UnauthorizedException('Invalid OTP');
     if (user.otpExpiry! < new Date())
       throw new UnauthorizedException('OTP has expired');
     await this.userRepository.updateOne(
-      { phone: verifyAccountDTO.phone.trim() },
+      { email: verifyAccountDTO.email.trim() },
       {
         emailVerified: true,
         status: AccountStatus.ACTIVE,
