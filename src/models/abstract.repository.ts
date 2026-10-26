@@ -11,7 +11,7 @@ export class AbstractRepository<T> {
 
   public async create(item: Partial<T>) {
     const doc = new this.model(item);
-    return doc.save();
+    return await doc.save();
   }
 
   public async getOne(

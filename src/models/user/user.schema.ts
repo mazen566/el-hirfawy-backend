@@ -67,6 +67,12 @@ export class User {
   })
   authProvider: AuthProvider;
 
+  @Prop({ type: String, unique: true, sparse: true })
+  googleId?: string;
+
+  @Prop({ type: String, unique: true, sparse: true })
+  facebookId?: string;
+
   // Account Status
 
   @Prop({

@@ -27,9 +27,7 @@ export class AuthGuard implements CanActivate {
         context.getClass(),
       ]);
 
-      if (isPublic) {
-        return true;
-      }
+      if (isPublic) return true;
 
       // 2. Get request
       const request = context.switchToHttp().getRequest();
@@ -37,16 +35,14 @@ export class AuthGuard implements CanActivate {
       // 3. Get Authorization header
       const authorization = request.headers.authorization;
 
-      if (!authorization) {
+      if (!authorization)
         throw new UnauthorizedException('Access token is required');
-      }
 
       // 4. Extract Bearer token
       const [type, token] = authorization.split(' ');
 
-      if (type !== 'Bearer' || !token) {
+      if (type !== 'Bearer' || !token)
         throw new UnauthorizedException('Invalid authorization header');
-      }
 
       // 5. Verify Access Token
       const payload = this.jwtService.verify<{
@@ -62,14 +58,11 @@ export class AuthGuard implements CanActivate {
         _id: payload._id,
       });
 
-      if (!user) {
-        throw new UnauthorizedException('User not found');
-      }
+      if (!user) throw new UnauthorizedException('User not found');
 
       // 7. Check account status
-      if (user.status !== AccountStatus.ACTIVE) {
+      if (user.status !== AccountStatus.ACTIVE)
         throw new UnauthorizedException('Account is not active');
-      }
 
       // 8. Attach user to request
       request.user = user;

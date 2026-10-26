@@ -4,6 +4,7 @@ import {
   AccountStatus,
   AuthProvider,
   UserRole,
+  VerificationStatus,
 } from '../../../common/index.js';
 
 export class User {
@@ -21,6 +22,10 @@ export class User {
   password: string;
   role: UserRole;
   authProvider: AuthProvider;
+
+  googleId?: string;
+  facebookId?: string;
+  verificationStatus?: VerificationStatus;
 
   // Account Status
 

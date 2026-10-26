@@ -7,13 +7,13 @@ import { AuthService } from './auth.service.js';
 import { ChangePasswordDto } from './dto/changePassword.dto.js';
 import { ForgotPasswordDto } from './dto/forgotPassword.dto.js';
 import { LoginDTO } from './dto/login.dto.js';
+import { GoogleLoginDto } from './dto/loginGoogle.dto.js';
 import { RefreshTokenDto } from './dto/refreshToken.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
 import { ResendOtpDto } from './dto/resendOtp.dto.js';
 import { ResetPasswordDto } from './dto/resetPassword.dto.js';
 import { VerifyAccountDTO } from './dto/verifyAccount.dto.js';
 import { AuthFactoryService } from './factory/index.js';
-
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -129,6 +129,18 @@ export class AuthController {
     return {
       message: 'OTP sent successfully',
       success: true,
+    };
+  }
+
+  @Public()
+  @Post('loginWithGoogle')
+  async googleLogin(@Body() googleLoginDto: GoogleLoginDto) {
+    const tokens = await this.authService.googleLogin(googleLoginDto);
+
+    return {
+      message: 'Google login successful',
+      success: true,
+      data: tokens,
     };
   }
 }

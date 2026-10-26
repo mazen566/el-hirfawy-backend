@@ -12,10 +12,10 @@ import { UserMongoModule } from './shared/index.js';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DB_URL as string, {
+    MongooseModule.forRoot(process.env.MONGODB_URI as string, {
       onConnectionCreate: (connection: Connection) => {
         connection.on('connected', () =>
-          console.log(`Connected to MongoDB on ${process.env.DB_URL}`),
+          console.log('Connected to MongoDB successfully'),
         );
         return connection;
       },
