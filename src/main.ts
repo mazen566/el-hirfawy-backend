@@ -52,4 +52,7 @@ async function bootstrap() {
   }
 }
 
-await bootstrap();
+bootstrap().catch((error) => {
+  console.error('[BOOT ERROR]', error);
+  process.exit(1);
+});
