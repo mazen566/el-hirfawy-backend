@@ -13,10 +13,15 @@ import { UserMongoModule } from './shared/index.js';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI as string, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
       onConnectionCreate: (connection: Connection) => {
-        connection.on('connected', () =>
-          console.log('Connected to MongoDB successfully'),
-        );
+        connection.on('connected', () => {
+          console.log('Connected to MongoDB successfully');
+        });
+        connection.on('error', (error) => {
+          console.error('MongoDB connection error:', error.message);
+        });
         return connection;
       },
     }),
