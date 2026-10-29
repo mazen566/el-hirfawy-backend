@@ -14,6 +14,7 @@ import { ResendOtpDto } from './dto/resendOtp.dto.js';
 import { ResetPasswordDto } from './dto/resetPassword.dto.js';
 import { VerifyAccountDTO } from './dto/verifyAccount.dto.js';
 import { AuthFactoryService } from './factory/index.js';
+
 @Controller('auth')
 export class AuthController {
   constructor(

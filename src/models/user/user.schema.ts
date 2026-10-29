@@ -123,26 +123,24 @@ export class User {
 
   // Location
 
-  // @Prop({
-  //   type: {
-  //     type: String,
-  //     enum: ['Point'],
-  //     required: true,
-  //   },
-  //   coordinates: {
-  //     type: [Number],
-  //     required: true,
-  //   },
-  //   _id: false,
-  // })
-  // location?: {
-  //   type: 'Point';
-  //   coordinates: [number, number];
-  // };
+  @Prop({
+    type: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+        default: undefined,
+      },
+    },
+    default: undefined,
+  })
+  location?: {
+    type: 'Point';
+    coordinates: [number, number]; // [longitude, latitude]
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// UserSchema.index({
-//   location: '2dsphere',
-// });
