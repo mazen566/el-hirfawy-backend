@@ -23,13 +23,21 @@ export class AuthFactoryService {
     customer.email = registerDto.email.trim().toLowerCase();
     customer.phone = registerDto.phone.trim();
     customer.password = await bcrypt.hash(registerDto.password, 10);
+
     customer.role = UserRole.CUSTOMER;
     customer.authProvider = AuthProvider.LOCAL;
     customer.status = AccountStatus.PENDING;
+
     customer.emailVerified = false;
     customer.phoneVerified = false;
+
     customer.otp = generateOTP();
     customer.otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+    // Common default values
+    customer.location = null;
+    customer.address = null;
+    customer.profileImageKey = null;
 
     return customer;
   }
@@ -44,23 +52,41 @@ export class AuthFactoryService {
     provider.email = registerDto.email.trim().toLowerCase();
     provider.phone = registerDto.phone.trim();
     provider.password = await bcrypt.hash(registerDto.password, 10);
+
     provider.role = UserRole.PROVIDER;
     provider.authProvider = AuthProvider.LOCAL;
     provider.status = AccountStatus.PENDING;
+
     provider.emailVerified = false;
     provider.phoneVerified = false;
+
     provider.otp = generateOTP();
     provider.otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Provider Default Values
+    // Common default values
+    provider.location = null;
+    provider.address = null;
+    provider.profileImageKey = null;
 
+    // Provider default values
     provider.verificationStatus = VerificationStatus.PENDING;
     provider.availabilityStatus = ProviderAvailability.OFFLINE;
+
     provider.ratingAvg = 0;
     provider.ratingCount = 0;
     provider.totalCompletedServices = 0;
+
     provider.workingHours = [];
     provider.serviceAreas = [];
+
+    // Profile fields - completed later
+    provider.title = null;
+    provider.bio = null;
+    provider.experience = null;
+
+    // Identity images - uploaded later
+    provider.idCardImageKey = null;
+    provider.selfieImageKey = null;
 
     return provider;
   }

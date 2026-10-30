@@ -9,24 +9,14 @@ import { User } from '../user/user.schema.js';
 export class Provider extends User {
   // Professional Information
 
-  @Prop({
-    type: String,
-    trim: true,
-  })
-  specialization?: string;
+  @Prop({ type: String, trim: true })
+  title: string | null;
 
-  @Prop({
-    type: Number,
-    min: 0,
-  })
-  experienceYears?: number;
+  @Prop({ type: String, trim: true })
+  bio: string | null;
 
-  @Prop({
-    type: String,
-    trim: true,
-    maxlength: 1000,
-  })
-  bio?: string;
+  @Prop({ type: Number, min: 0 })
+  experience: number | null;
 
   // Verification
 
@@ -37,17 +27,14 @@ export class Provider extends User {
   })
   verificationStatus: VerificationStatus;
 
-  /**
-   * Identity card.
-   *
-   * Later this will be populated after
-   * Multer uploads the file.
-   */
-  @Prop({
-    type: String,
-    trim: true,
-  })
-  identityDocument?: string;
+  @Prop({ type: String, default: null })
+  idCardImageKey: string | null;
+
+  @Prop({ type: String, default: null })
+  selfieImageKey: string | null;
+
+  @Prop({ type: Number, default: null, min: 0, max: 100 })
+  aiResult: number | null;
 
   @Prop({
     type: Date,

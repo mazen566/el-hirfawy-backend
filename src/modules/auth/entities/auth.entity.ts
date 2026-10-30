@@ -1,48 +1,60 @@
 import { Types } from 'mongoose';
-
 import {
   AccountStatus,
   AuthProvider,
+  ProviderAvailability,
   UserRole,
   VerificationStatus,
 } from '../../../common/index.js';
 
 export class User {
-  readonly _id: Types.ObjectId;
-
-  // Basic Information
+  _id: Types.ObjectId;
 
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-
-  // Authentication
-
   password: string;
+
   role: UserRole;
   authProvider: AuthProvider;
-
-  googleId?: string;
-  facebookId?: string;
-  verificationStatus?: VerificationStatus;
-
-  // Account Status
-
   status: AccountStatus;
+
   emailVerified: boolean;
   phoneVerified: boolean;
-
-  // Profile
-
-  profileImage?: string;
-
-  // OTP
 
   otp?: string;
   otpExpiry?: Date;
 
-  // Refresh Token
+  location: any | null;
 
-  refreshToken?: string;
+  address: {
+    governorate: string;
+    district: string;
+  } | null;
+
+  profileImageKey: string | null;
 }
+
+export class Customer extends User {}
+
+export class Provider extends User {
+  title: string | null;
+  bio: string | null;
+  experience: number | null;
+
+  idCardImageKey: string | null;
+  selfieImageKey: string | null;
+
+  verificationStatus: VerificationStatus;
+  availabilityStatus: ProviderAvailability;
+
+  ratingAvg: number;
+  ratingCount: number;
+  totalCompletedServices: number;
+
+  workingHours: any[];
+  serviceAreas: any[];
+}
+
+export class Admin extends User {}

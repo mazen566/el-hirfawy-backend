@@ -6,8 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-
-import { UserRepository } from '../../models/index.js';
+import { UserRepository } from '../../models/user/user.repository.js';
 import { PUBLIC } from '../decorators/public.decorator.js';
 import { AccountStatus } from '../enums/user.enums.js';
 

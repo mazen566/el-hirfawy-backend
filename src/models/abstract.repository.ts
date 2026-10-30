@@ -14,6 +14,12 @@ export class AbstractRepository<T> {
     return await doc.save();
   }
 
+  public async getAllUsers() {
+    return this.model
+      .find({})
+      .select('-password -otp -otpExpiry -refreshToken');
+  }
+
   public async getOne(
     filter: QueryFilter<T>,
     projection?: ProjectionType<T>,

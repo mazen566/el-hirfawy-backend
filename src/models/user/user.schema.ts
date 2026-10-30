@@ -1,6 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { AccountStatus, AuthProvider, UserRole } from '../../common/index.js';
+import {
+  AccountStatus,
+  AuthProvider,
+  UserRole,
+} from '../../common/enums/user.enums.js';
+import { Schema as MongooseSchema } from 'mongoose';
 
 @Schema({
   timestamps: true,
@@ -98,9 +103,22 @@ export class User {
 
   @Prop({
     type: String,
-    trim: true,
+    default: null,
   })
-  profileImage?: string;
+  profileImageKey: string | null;
+
+  @Prop({
+    type: {
+      governorate: { type: String, required: true },
+      district: { type: String, required: true },
+    },
+    required: false,
+    default: null,
+  })
+  address: {
+    governorate: string;
+    district: string;
+  } | null;
 
   // OTP
 
@@ -122,25 +140,14 @@ export class User {
   refreshToken?: string;
 
   // Location
-
   @Prop({
-    type: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point',
-      },
-      coordinates: {
-        type: [Number],
-        default: undefined,
-      },
-    },
-    default: undefined,
+    type: MongooseSchema.Types.Mixed,
+    default: null,
   })
-  location?: {
+  location: {
     type: 'Point';
-    coordinates: [number, number]; // [longitude, latitude]
-  };
+    coordinates: [number, number];
+  } | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
