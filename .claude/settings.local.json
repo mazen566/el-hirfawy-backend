@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& powershell -Command \"cd 'E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main'; & npm run build\")",
+      "PowerShell(& powershell -Command \"cd 'E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main'; $env:PATH = '$env:PATH'; npm run build\")",
+      "PowerShell(npx vitest run)",
+      "PowerShell(npx vitest run test/unit 2>&1)",
+      "PowerShell(head -200)",
+      "PowerShell(npx vitest run test/unit)",
+      "PowerShell(npx nest build)",
+      "PowerShell(npx vitest run 2>&1)",
+      "PowerShell(npx nest build 2>&1)",
+      "PowerShell(npm ls cloudinary @types/cloudinary @types/multer multer 2>&1)",
+      "PowerShell(npm ls @types/express @types/node 2>&1)",
+      "PowerShell(npm ls @types/multer 2>&1)",
+      "PowerShell(npm ls cloudinary 2>&1)",
+      "PowerShell(npm info cloudinary --json 2>&1)",
+      "PowerShell(npm install 2>&1)",
+      "PowerShell(powershell -Command \"Expand-Archive -Path 'E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main old.zip' -DestinationPath 'E:\\\\level 4\\\\final\\\\old_project_inspect' -Force 2>&1\" ; ls \"E:\\\\level 4\\\\final\\\\old_project_inspect\" 2>&1 | head -30)",
+      "PowerShell(sort)",
+      "PowerShell(ls \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\\" 2>&1)",
+      "PowerShell(fc /a \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\" \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\" 2>&1)",
+      "PowerShell(Write-Host \"=== AUTH GUARD SIZE ===\"; \\(Get-Item \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\"\\).Length; \\(Get-Item \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\"\\).Length; Write-Host \"=== ROLES GUARD SIZE ===\"; \\(Get-Item \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\roles.guard.ts\"\\).Length; \\(Get-Item \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\roles.guard.ts\"\\).Length)",
+      "PowerShell(Write-Host \"=== AUTH GUARD COMPARE ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\auth.guard.ts\"\\) | Out-String; Write-Host \"`n=== ROLES GUARD COMPARE ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\roles.guard.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\guards\\\\roles.guard.ts\"\\) | Out-String)",
+      "PowerShell(Write-Host \"=== CLOUDINARY SERVICE ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\helpers\\\\cloudinary.service.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\helpers\\\\cloudinary.service.ts\"\\) | Out-String; Write-Host \"`n=== MULTER CLOUD HELPER ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\helpers\\\\multer-cloud.helper.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\helpers\\\\multer-cloud.helper.ts\"\\) | Out-String; Write-Host \"`n=== USER ENUMS ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\enums\\\\user.enums.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\enums\\\\user.enums.ts\"\\) | Out-String; Write-Host \"`n=== ROLS DECORATOR ===\"; Compare-Object -ReferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\decorators\\\\roles.decorator.ts\"\\) -DifferenceObject \\(Get-Content \"E:\\\\level 4\\\\final\\\\old_project_inspect\\\\el-hirfawy-backend-main\\\\src\\\\common\\\\decorators\\\\roles.decorator.ts\"\\) | Out-String)",
+      "PowerShell(ls \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\modules\\\\wallet\\\\\" 2>&1)",
+      "PowerShell(ls \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\modules\\\\offer\\\\dto\\\\\" 2>&1)",
+      "PowerShell(ls \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\modules\\\\offer\\\\\" 2>&1)",
+      "PowerShell(head -n 350 \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\modules\\\\offer\\\\offer.service.ts\")",
+      "PowerShell(tail -n 130)",
+      "PowerShell(grep -n \"find\\\\|GET\\\\|get\\\\|list\" 2>&1)",
+      "PowerShell(head -30)",
+      "PowerShell(head -n 140 \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main\\\\src\\\\modules\\\\wallet\\\\wallet.service.ts\")",
+      "PowerShell(wc -l \"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main/PROJECT_HANDOFF.md\")",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"E:\\\\level 4\\\\final\\\\el-hirfawy-backend-main/PROJECT_HANDOFF.md\"\\) | Out-String | Write-Host)",
+      "PowerShell(tail -5)",
+      "PowerShell(tail -10)",
+      "PowerShell([bool]$a=$true;$b=$false)"
+    ]
+  }
+}
