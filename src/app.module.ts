@@ -8,6 +8,8 @@ import { AuthModule } from './modules/auth/auth.module.js';
 import { UserMongoModule } from './shared/index.js';
 import { UserModule } from './modules/user/user.module.js';
 import { ProviderModule } from './modules/provider/provider.module.js';
+import { WalletModule } from './modules/wallet/wallet.module.js';
+import { OfferModule } from './modules/offer/offer.module.js';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { ProviderModule } from './modules/provider/provider.module.js';
     AuthModule,
     UserModule,
     ProviderModule,
+    WalletModule,
+    OfferModule,
   ],
   controllers: [AppController],
   providers: [AppService],
