@@ -149,5 +149,41 @@ export class User {
     coordinates: [number, number];
   } | null;
 }
-
 export const UserSchema = SchemaFactory.createForClass(User);
+
+@Prop({
+  type: {
+    governorate: { type: String, required: true },
+    district: { type: String, required: true },
+    detailedAddress: { type: String, required: true, trim: true },
+  },
+  required: false,
+  default: null,
+})
+address: {
+  governorate: string;
+  district: string;
+  detailedAddress: string;
+} | null;
+
+@Prop({
+  type: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+  required: false,
+  default: null,
+})
+location: {
+  type: 'Point';
+  coordinates: [number, number];
+} | null;
+UserSchema.index({ location: '2dsphere' });
+
