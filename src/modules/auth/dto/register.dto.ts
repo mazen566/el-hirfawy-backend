@@ -1,12 +1,13 @@
 import {
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsString,
   MinLength,
 } from 'class-validator';
-import { UserRole } from '../../../common/index.js';
 import { Match } from '../../../common/decorators/match.decorator.js';
+import { UserRole } from '../../../common/index.js';
 
 export class RegisterDto {
   @IsString()
@@ -26,6 +27,10 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   phone: string;
+
+  @IsDateString()
+  @IsNotEmpty()
+  dateOfBirth: string;
 
   @IsString()
   @IsNotEmpty()

@@ -20,16 +20,21 @@ async function bootstrap() {
     const firstName = process.env.ADMIN_FIRST_NAME?.trim() || 'System';
     const lastName = process.env.ADMIN_LAST_NAME?.trim() || 'Admin';
     const phone = process.env.ADMIN_PHONE?.trim();
+    const dateOfBirth = process.env.ADMIN_DATE_OF_BIRTH;
 
-    if (!email || !password || !phone) {
+    if (!email || !password || !phone || !dateOfBirth) {
       throw new Error(
-        'ADMIN_EMAIL, ADMIN_PASSWORD and ADMIN_PHONE are required in .env',
+        'ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_PHONE and ADMIN_DATE_OF_BIRTH are required in .env',
       );
     }
 
-    if (password.length < 8) {
+    if (password.length < 8)
       throw new Error('Admin password must be at least 8 characters');
-    }
+
+    const parsedDateOfBirth = new Date(dateOfBirth);
+
+    if (Number.isNaN(parsedDateOfBirth.getTime()))
+      throw new Error('Invalid ADMIN_DATE_OF_BIRTH format');
 
     const existingUser = await userModel.findOne({ email });
 
@@ -44,6 +49,7 @@ async function bootstrap() {
     admin.lastName = lastName;
     admin.email = email;
     admin.phone = phone;
+    admin.dateOfBirth = parsedDateOfBirth;
     admin.password = await bcrypt.hash(password, 10);
     admin.role = UserRole.ADMIN;
     admin.authProvider = AuthProvider.LOCAL;

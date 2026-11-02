@@ -7,10 +7,11 @@ import { UserService } from './user.service.js';
 import { UserMongoModule } from '../../shared/index.js';
 import { JwtService } from '@nestjs/jwt';
 import { CloudinaryService } from '../../common/index.js';
+import { AiVerificationService } from '../ai/ai.service.js';
 
 @Module({
   imports: [UserMongoModule],
   controllers: [UserController],
-  providers: [UserService, JwtService, CloudinaryService],
+  providers: [UserService, JwtService, CloudinaryService, AiVerificationService],
 })
 export class UserModule {}

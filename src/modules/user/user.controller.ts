@@ -6,18 +6,24 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   UploadedFile,
   UploadedFiles,
+  UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
-import { Auth, multerCloudConfig, User } from '../../common/index.js';
-import { UserService } from './user.service.js';
+import {
+  Auth,
+  multerCloudConfig,
+  MulterExceptionFilter,
+  User,
+} from '../../common/index.js';
 import { CompleteProfileDto } from './dto/complete-profile.dto.js';
+import { UpdateLocationDto } from './dto/update-location.dto.js';
+import { UserService } from './user.service.js';
 
 @Controller('user')
 export class UserController {
@@ -27,6 +33,12 @@ export class UserController {
   @Auth()
   async completeProfile(@Body() body: CompleteProfileDto, @User() user: any) {
     return this.userService.completeProfile(user._id, body);
+  }
+
+  @Patch('location')
+  @Auth()
+  async updateLocation(@User() user: any, @Body() body: UpdateLocationDto) {
+    return this.userService.updateLocation(user._id, body);
   }
 
   @Get('all-users')
@@ -46,6 +58,7 @@ export class UserController {
 
   @Post('verify-identity')
   @Auth()
+  @UseFilters(MulterExceptionFilter)
   @UseInterceptors(
     FileFieldsInterceptor(
       [

@@ -1,9 +1,10 @@
 import {
-  IsString,
+  IsArray,
+  IsIn,
   IsNotEmpty,
   IsOptional,
-  IsNumber,
-  Min,
+  IsString,
+  Matches,
   ValidateNested,
 } from 'class-validator';
 
@@ -17,24 +18,37 @@ class AddressDto {
   @IsString()
   @IsNotEmpty()
   district: string;
+
+  @IsString()
+  @IsNotEmpty()
+  street: string;
+}
+
+export class WorkingHoursDto {
+  @IsString()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  from: string;
+
+  @IsString()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  to: string;
 }
 
 export class CompleteProfileDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title?: string;
+  service?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  bio?: string;
+  experience?: string;
 
+  @ValidateNested()
+  @Type(() => WorkingHoursDto)
   @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  @Min(0)
-  experience?: number;
+  workingHours?: WorkingHoursDto;
 
   @ValidateNested()
   @Type(() => AddressDto)

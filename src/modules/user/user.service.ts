@@ -3,10 +3,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CloudinaryService, UserRole } from '../../common/index.js';
-import { ProviderRepository, UserRepository } from '../../models/index.js';
-import { CompleteProfileDto } from './dto/complete-profile.dto.js';
 import { Types } from 'mongoose';
+import {
+  CloudinaryService,
+  UserRole,
+  validateImage,
+} from '../../common/index.js';
+import { ProviderRepository, UserRepository } from '../../models/index.js';
+import { AiVerificationService } from '../ai/ai.service.js';
+import { CompleteProfileDto } from './dto/complete-profile.dto.js';
+import { UpdateLocationDto } from './dto/update-location.dto.js';
 
 @Injectable()
 export class UserService {
@@ -14,6 +20,7 @@ export class UserService {
     private readonly providerRepository: ProviderRepository,
     private readonly userRepository: UserRepository,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly aiVerificationService: AiVerificationService,
   ) {}
 
   async completeProfile(userId: string, body: CompleteProfileDto) {
@@ -21,16 +28,27 @@ export class UserService {
       _id: userId,
     });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException('User not found');
+
+    if (
+      !body.address?.governorate ||
+      !body.address?.district ||
+      !body.address?.street
+    ) {
+      throw new BadRequestException(
+        'Governorate, district and street are required',
+      );
     }
 
-    user.address = body.address;
-
     if (user.role === UserRole.PROVIDER) {
-      if (!body.title || !body.bio || body.experience === undefined) {
+      if (
+        !body.service ||
+        !body.experience ||
+        !body.workingHours?.from ||
+        !body.workingHours?.to
+      ) {
         throw new BadRequestException(
-          'Title, bio and experience are required for providers',
+          'Service, experience and working hours are required for providers',
         );
       }
 
@@ -38,22 +56,41 @@ export class UserService {
         _id: userId,
       });
 
-      if (!provider) {
-        throw new NotFoundException('Provider profile not found');
-      }
+      if (!provider) throw new NotFoundException('Provider profile not found');
 
       provider.address = body.address;
-      provider.title = body.title;
-      provider.bio = body.bio;
+      provider.service = body.service;
       provider.experience = body.experience;
+      provider.workingHours = body.workingHours;
 
       await provider.save();
     } else {
+      user.address = body.address;
       await user.save();
     }
 
     return {
       message: 'Profile completed successfully',
+    };
+  }
+
+  async updateLocation(userId: string, body: UpdateLocationDto) {
+    const user = await this.userRepository.getOne({
+      _id: userId,
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    user.location = {
+      type: 'Point',
+      coordinates: [body.longitude, body.latitude],
+    };
+
+    await user.save();
+
+    return {
+      message: 'Location updated successfully',
+      location: user.location,
     };
   }
 
@@ -115,6 +152,28 @@ export class UserService {
 
     if (!provider) throw new NotFoundException('Provider profile not found');
 
+    await Promise.all([
+      validateImage(files.idCardImage[0]),
+      validateImage(files.selfieImage[0]),
+    ]);
+
+    const aiResponse = await this.aiVerificationService.verifyIdentity(
+      files.idCardImage[0],
+      files.selfieImage[0],
+    );
+
+    if (
+      !aiResponse.success ||
+      typeof aiResponse.similarity_score !== 'number' ||
+      !Number.isFinite(aiResponse.similarity_score) ||
+      aiResponse.similarity_score < 0 ||
+      aiResponse.similarity_score > 1
+    ) {
+      throw new BadRequestException('AI identity verification failed');
+    }
+
+    const aiResult = Number((aiResponse.similarity_score * 100).toFixed(2));
+
     const [idCard, selfie] = await Promise.all([
       this.cloudinaryService.uploadImage(
         files.idCardImage[0],
@@ -128,14 +187,18 @@ export class UserService {
 
     provider.idCardImageKey = idCard.public_id;
     provider.selfieImageKey = selfie.public_id;
+    provider.aiResult = aiResult;
 
     await provider.save();
 
     return {
-      message: 'Identity images uploaded successfully',
+      message: 'Identity images uploaded and analyzed successfully',
       data: {
         idCardImage: idCard,
         selfieImage: selfie,
+        aiResult,
+        aiDecision: aiResponse.decision,
+        aiMessage: aiResponse.message,
       },
     };
   }

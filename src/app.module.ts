@@ -8,6 +8,7 @@ import { AuthModule } from './modules/auth/auth.module.js';
 import { UserMongoModule } from './shared/index.js';
 import { UserModule } from './modules/user/user.module.js';
 import { ProviderModule } from './modules/provider/provider.module.js';
+import { ServiceModule } from './modules/service/service.module.js';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ProviderModule } from './modules/provider/provider.module.js';
     AuthModule,
     UserModule,
     ProviderModule,
+    ServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

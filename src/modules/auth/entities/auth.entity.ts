@@ -15,6 +15,7 @@ export class User {
   email: string;
   phone: string;
   password: string;
+  dateOfBirth: Date;
 
   role: UserRole;
   authProvider: AuthProvider;
@@ -26,11 +27,15 @@ export class User {
   otp?: string;
   otpExpiry?: Date;
 
-  location: any | null;
+  location: {
+    type: 'Point';
+    coordinates: [number, number];
+  } | null;
 
   address: {
     governorate: string;
     district: string;
+    street: string;
   } | null;
 
   profileImageKey: string | null;
@@ -39,9 +44,8 @@ export class User {
 export class Customer extends User {}
 
 export class Provider extends User {
-  title: string | null;
-  bio: string | null;
-  experience: number | null;
+  service: string | null;
+  experience: string | null;
 
   idCardImageKey: string | null;
   selfieImageKey: string | null;
@@ -53,7 +57,11 @@ export class Provider extends User {
   ratingCount: number;
   totalCompletedServices: number;
 
-  workingHours: any[];
+  workingHours: {
+    from: string;
+    to: string;
+  } | null;
+
   serviceAreas: any[];
 }
 

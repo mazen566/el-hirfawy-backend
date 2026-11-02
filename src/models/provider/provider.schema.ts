@@ -9,14 +9,17 @@ import { User } from '../user/user.schema.js';
 export class Provider extends User {
   // Professional Information
 
+  @Prop({ type: String, trim: true, default: null })
+  service: string | null;
+
   @Prop({ type: String, trim: true })
   title: string | null;
 
   @Prop({ type: String, trim: true })
   bio: string | null;
 
-  @Prop({ type: Number, min: 0 })
-  experience: number | null;
+  @Prop({ type: String, default: null })
+  experience: string | null;
 
   // Verification
 
@@ -91,33 +94,16 @@ export class Provider extends User {
   // Working Hours
 
   @Prop({
-    type: [
-      {
-        dayOfWeek: {
-          type: Number,
-          required: true,
-          min: 0,
-          max: 6,
-        },
-
-        from: {
-          type: String,
-          required: true,
-        },
-
-        to: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-    default: [],
+    type: {
+      from: { type: String, required: true },
+      to: { type: String, required: true },
+    },
+    default: null,
   })
   workingHours: {
-    dayOfWeek: number;
     from: string;
     to: string;
-  }[];
+  } | null;
 
   // Service Areas
 

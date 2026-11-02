@@ -50,6 +50,12 @@ export class User {
   })
   phone: string;
 
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  dateOfBirth: Date;
+
   // Authentication
 
   @Prop({
@@ -111,13 +117,14 @@ export class User {
     type: {
       governorate: { type: String, required: true },
       district: { type: String, required: true },
+      street: { type: String, required: true },
     },
-    required: false,
     default: null,
   })
   address: {
     governorate: string;
     district: string;
+    street: string;
   } | null;
 
   // OTP

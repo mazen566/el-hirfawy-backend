@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { generateOTP } from '../../../common/helpers/otp.helpers.js';
 import {
@@ -13,9 +13,39 @@ import { RegisterDto } from '../dto/register.dto.js';
 
 @Injectable()
 export class AuthFactoryService {
+  private validateAge(dateOfBirth: string): void {
+    const birthDate = new Date(dateOfBirth);
+
+    if (
+      Number.isNaN(birthDate.getTime()) ||
+      birthDate.toISOString().slice(0, 10) !== dateOfBirth
+    ) {
+      throw new BadRequestException('Invalid date of birth');
+    }
+
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    if (
+      today.getMonth() < birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() &&
+        today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    if (age < 21) {
+      throw new BadRequestException(
+        'You must be at least 21 years old to register',
+      );
+    }
+  }
+
   // Create Customer Account
 
   async createCustomer(registerDto: RegisterDto): Promise<Customer> {
+    this.validateAge(registerDto.dateOfBirth);
     const customer = new Customer();
 
     customer.firstName = registerDto.firstName.trim();
@@ -23,6 +53,8 @@ export class AuthFactoryService {
     customer.email = registerDto.email.trim().toLowerCase();
     customer.phone = registerDto.phone.trim();
     customer.password = await bcrypt.hash(registerDto.password, 10);
+
+    customer.dateOfBirth = new Date(registerDto.dateOfBirth);
 
     customer.role = UserRole.CUSTOMER;
     customer.authProvider = AuthProvider.LOCAL;
@@ -45,6 +77,7 @@ export class AuthFactoryService {
   // Create Provider Account
 
   async createProvider(registerDto: RegisterDto): Promise<Provider> {
+    this.validateAge(registerDto.dateOfBirth);
     const provider = new Provider();
 
     provider.firstName = registerDto.firstName.trim();
@@ -52,6 +85,8 @@ export class AuthFactoryService {
     provider.email = registerDto.email.trim().toLowerCase();
     provider.phone = registerDto.phone.trim();
     provider.password = await bcrypt.hash(registerDto.password, 10);
+
+    provider.dateOfBirth = new Date(registerDto.dateOfBirth);
 
     provider.role = UserRole.PROVIDER;
     provider.authProvider = AuthProvider.LOCAL;
@@ -76,7 +111,7 @@ export class AuthFactoryService {
     provider.ratingCount = 0;
     provider.totalCompletedServices = 0;
 
-    provider.workingHours = [];
+    provider.workingHours = null;
     provider.serviceAreas = [];
 
     // Profile fields - completed later
