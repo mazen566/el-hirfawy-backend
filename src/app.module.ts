@@ -9,6 +9,7 @@ import { UserMongoModule } from './shared/index.js';
 import { UserModule } from './modules/user/user.module.js';
 import { ProviderModule } from './modules/provider/provider.module.js';
 import { ServiceModule } from './modules/service/service.module.js';
+import { AdminModule } from './modules/admin/admin.module.js';
 
 @Module({
   imports: [
