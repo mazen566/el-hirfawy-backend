@@ -62,7 +62,7 @@ export class Provider extends User {
     to: string;
   } | null;
 
-  serviceAreas: any[];
+  // serviceAreas: any[];
 }
 
 export class Admin extends User {}

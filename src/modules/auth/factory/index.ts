@@ -112,11 +112,9 @@ export class AuthFactoryService {
     provider.totalCompletedServices = 0;
 
     provider.workingHours = null;
-    provider.serviceAreas = [];
+    // provider.serviceAreas = [];
 
     // Profile fields - completed later
-    provider.title = null;
-    provider.bio = null;
     provider.experience = null;
 
     // Identity images - uploaded later

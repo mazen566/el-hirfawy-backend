@@ -34,6 +34,7 @@ import { AdminModule } from './modules/admin/admin.module.js';
     UserModule,
     ProviderModule,
     ServiceModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

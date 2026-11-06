@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { v2 as cloudinary } from 'cloudinary';
 import { Types } from 'mongoose';
 import {
   CloudinaryService,
@@ -229,6 +230,29 @@ export class UserService {
       data: {
         profileImage: uploadedImage.secure_url,
       },
+    };
+  }
+
+  async getProfileImage(userId: string) {
+    const user = await this.userRepository.getOne({
+      _id: userId,
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+    if (!user.profileImageKey) {
+      return {
+        message: 'Profile image not found',
+        profileImageUrl: null,
+      };
+    }
+
+    const profileImageUrl = cloudinary.url(user.profileImageKey, {
+      secure: true,
+    });
+
+    return {
+      message: 'Profile image retrieved successfully',
+      profileImageUrl,
     };
   }
 }

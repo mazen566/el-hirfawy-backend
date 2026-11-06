@@ -8,6 +8,7 @@ import {
 
 import {
   Auth,
+  Public,
   User,
   UserRole,
 } from '../../common/index.js';
@@ -21,6 +22,7 @@ export class AdminController {
 
   // Get all users
   @Get('users')
+  @Public()
   getAllUsers() {
     return this.adminService.getAllUsers();
   }

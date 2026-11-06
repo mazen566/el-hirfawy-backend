@@ -41,14 +41,21 @@ export class UserController {
     return this.userService.updateLocation(user._id, body);
   }
 
-  @Get('all-users')
-  async getAllUsers() {
-    return this.userService.getAllUsers();
+  @Get('profile-image')
+  @Auth()
+  async getProfileImage(@User() user: any) {
+    return this.userService.getProfileImage(user._id.toString());
   }
 
   @Get(':id')
+  @Auth()
   async getUserById(@Param('id') id: string) {
     return this.userService.getUserById(id);
+  }
+
+  @Get('all-users')
+  async getAllUsers() {
+    return this.userService.getAllUsers();
   }
 
   @Delete(':id')

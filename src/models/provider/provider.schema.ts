@@ -12,12 +12,6 @@ export class Provider extends User {
   @Prop({ type: String, trim: true, default: null })
   service: string | null;
 
-  @Prop({ type: String, trim: true })
-  title: string | null;
-
-  @Prop({ type: String, trim: true })
-  bio: string | null;
-
   @Prop({ type: String, default: null })
   experience: string | null;
 
@@ -107,11 +101,11 @@ export class Provider extends User {
 
   // Service Areas
 
-  @Prop({
-    type: [String],
-    default: [],
-  })
-  serviceAreas: string[];
+  // @Prop({
+  //   type: [String],
+  //   default: [],
+  // })
+  // serviceAreas: string[];
 }
 
 export const ProviderSchema = SchemaFactory.createForClass(Provider);
