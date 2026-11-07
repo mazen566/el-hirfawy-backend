@@ -24,7 +24,6 @@ export class AuthFactoryService {
     }
 
     const today = new Date();
-
     let age = today.getFullYear() - birthDate.getFullYear();
 
     if (

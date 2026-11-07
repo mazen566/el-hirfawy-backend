@@ -9,3 +9,6 @@ export * from './provider/provider.schema.js';
 
 export * from './admin/admin.repository.js';
 export * from './admin/admin.schema.js';
+
+export * from './category/category.repository.js';
+export * from './category/category.schema.js';

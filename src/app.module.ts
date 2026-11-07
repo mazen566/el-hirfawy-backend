@@ -4,12 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
+import { AdminModule } from './modules/admin/admin.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
-import { UserMongoModule } from './shared/index.js';
-import { UserModule } from './modules/user/user.module.js';
+import { CategoriesModule } from './modules/categories/categories.module.js';
 import { ProviderModule } from './modules/provider/provider.module.js';
 import { ServiceModule } from './modules/service/service.module.js';
-import { AdminModule } from './modules/admin/admin.module.js';
+import { UserModule } from './modules/user/user.module.js';
+import { UserMongoModule } from './shared/index.js';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { AdminModule } from './modules/admin/admin.module.js';
     ProviderModule,
     ServiceModule,
     AdminModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
