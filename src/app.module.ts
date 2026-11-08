@@ -8,6 +8,7 @@ import { AdminModule } from './modules/admin/admin.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { CategoriesModule } from './modules/categories/categories.module.js';
 import { ProviderModule } from './modules/provider/provider.module.js';
+import { ServiceRequestModule } from './modules/service-request/service-request.module.js';
 import { ServiceModule } from './modules/service/service.module.js';
 import { UserModule } from './modules/user/user.module.js';
 import { UserMongoModule } from './shared/index.js';
@@ -37,6 +38,7 @@ import { UserMongoModule } from './shared/index.js';
     ServiceModule,
     AdminModule,
     CategoriesModule,
+    ServiceRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

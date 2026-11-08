@@ -1,17 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 
-import {
-  Auth,
-  Public,
-  User,
-  UserRole,
-} from '../../common/index.js';
+import { Auth, Public, User, UserRole } from '../../common/index.js';
 
 import { AdminService } from './admin.service.js';
 
@@ -22,21 +11,14 @@ export class AdminController {
 
   // Get all users
   @Get('users')
-  @Public()
   getAllUsers() {
     return this.adminService.getAllUsers();
   }
 
   // Approve provider
   @Patch('providers/:id/approve')
-  approveProvider(
-    @Param('id') id: string,
-    @User() admin: any,
-  ) {
-    return this.adminService.approveProvider(
-      id,
-      admin._id.toString(),
-    );
+  approveProvider(@Param('id') id: string, @User() admin: any) {
+    return this.adminService.approveProvider(id, admin._id.toString());
   }
 
   // Reject provider
@@ -46,28 +28,24 @@ export class AdminController {
     @Body('reason') reason: string,
     @User() admin: any,
   ) {
-    return this.adminService.rejectProvider(
-      id,
-      reason,
-      admin._id.toString(),
-    );
+    return this.adminService.rejectProvider(id, reason, admin._id.toString());
   }
 
   // Suspend user
   @Patch('users/:id/suspend')
-  suspendUser(
-    @Param('id') id: string,
-    @User() admin: any,
-  ) {
-    return this.adminService.suspendUser(
-      id,
-      admin._id.toString(),
-    );
+  suspendUser(@Param('id') id: string, @User() admin: any) {
+    return this.adminService.suspendUser(id, admin._id.toString());
   }
 
   // Activate user
   @Patch('users/:id/activate')
   activateUser(@Param('id') id: string) {
     return this.adminService.activateUser(id);
+  }
+
+  // Get provider verification documents
+  @Get('providers/:id/verification')
+  getProviderVerification(@Param('id') id: string) {
+    return this.adminService.getProviderVerification(id);
   }
 }

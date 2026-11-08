@@ -4,19 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-
+import { v2 as cloudinary } from 'cloudinary';
 import { Types } from 'mongoose';
-
 import {
   AccountStatus,
   UserRole,
   VerificationStatus,
 } from '../../common/index.js';
-
-import {
-  ProviderRepository,
-  UserRepository,
-} from '../../models/index.js';
+import { ProviderRepository, UserRepository } from '../../models/index.js';
 
 @Injectable()
 export class AdminService {
@@ -37,10 +32,7 @@ export class AdminService {
   }
 
   // Approve provider
-  async approveProvider(
-    providerId: string,
-    adminId: string,
-  ) {
+  async approveProvider(providerId: string, adminId: string) {
     if (!Types.ObjectId.isValid(providerId)) {
       throw new BadRequestException('Invalid provider ID');
     }
@@ -54,12 +46,8 @@ export class AdminService {
       throw new NotFoundException('Provider not found');
     }
 
-    if (
-      provider.verificationStatus !== VerificationStatus.PENDING
-    ) {
-      throw new ConflictException(
-        'Only pending providers can be approved',
-      );
+    if (provider.verificationStatus !== VerificationStatus.PENDING) {
+      throw new ConflictException('Only pending providers can be approved');
     }
 
     provider.verificationStatus = VerificationStatus.APPROVED;
@@ -84,25 +72,17 @@ export class AdminService {
   }
 
   // Reject provider
-  async rejectProvider(
-    providerId: string,
-    reason: string,
-    adminId: string,
-  ) {
+  async rejectProvider(providerId: string, reason: string, adminId: string) {
     if (!Types.ObjectId.isValid(providerId)) {
       throw new BadRequestException('Invalid provider ID');
     }
 
     if (!reason?.trim()) {
-      throw new BadRequestException(
-        'Rejection reason is required',
-      );
+      throw new BadRequestException('Rejection reason is required');
     }
 
     if (reason.trim().length > 1000) {
-      throw new BadRequestException(
-        'Rejection reason is too long',
-      );
+      throw new BadRequestException('Rejection reason is too long');
     }
 
     const provider = await this.providerRepository.getOne({
@@ -114,12 +94,8 @@ export class AdminService {
       throw new NotFoundException('Provider not found');
     }
 
-    if (
-      provider.verificationStatus !== VerificationStatus.PENDING
-    ) {
-      throw new ConflictException(
-        'Only pending providers can be rejected',
-      );
+    if (provider.verificationStatus !== VerificationStatus.PENDING) {
+      throw new ConflictException('Only pending providers can be rejected');
     }
 
     provider.verificationStatus = VerificationStatus.REJECTED;
@@ -223,4 +199,42 @@ export class AdminService {
       },
     };
   }
+
+  // get verification documents
+  async getProviderVerification(providerId: string) {
+    const provider = await this.providerRepository.getOne({
+      _id: providerId,
+      role: UserRole.PROVIDER,
+    });
+
+    if (!provider) {
+      throw new NotFoundException('Provider not found');
+    }
+
+    if (!provider.idCardImageKey || !provider.selfieImageKey) {
+      throw new BadRequestException(
+        'Provider has not submitted verification documents',
+      );
+    }
+
+    const idCardImageUrl = cloudinary.url(provider.idCardImageKey, {
+      secure: true,
+    });
+
+    const selfieImageUrl = cloudinary.url(provider.selfieImageKey, {
+      secure: true,
+    });
+
+    return {
+      success: true,
+      message: 'Provider verification details retrieved successfully',
+      data: {
+        idCardImageUrl,
+        selfieImageUrl,
+      },
+      aiResult: provider.aiResult,
+    };
+  }
+
+  
 }

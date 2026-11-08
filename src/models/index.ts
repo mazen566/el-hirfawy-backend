@@ -12,3 +12,6 @@ export * from './admin/admin.schema.js';
 
 export * from './category/category.repository.js';
 export * from './category/category.schema.js';
+
+export * from './service-request/service-request.repository.js';
+export * from './service-request/service-request.schema.js';
